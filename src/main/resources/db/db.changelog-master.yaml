@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/create_company_table.sql
+  - include:
+      file: db/changelog/create_student_table.sql
+  - include:
+      file: db/changelog/create_internship_table.sql

@@ -1,0 +1,13 @@
+services:
+
+  postgres:
+    image: postgres:17.4
+    container_name: student
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: student
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/student/:/var/lib/postgresql/data  # Сохраняем данные БД
