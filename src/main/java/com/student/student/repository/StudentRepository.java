@@ -2,12 +2,48 @@ package com.student.student.repository;
 
 import com.student.student.data.Student;
 import com.student.student.repository.responce.StudentProjection;
+import com.student.student.repository.responce.StudentProjectionAndId;
+import com.student.student.repository.responce.StudentRecordResponse;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, UUID> {
  Stream<StudentProjection> findAllProjectedBy();
- }
+@Query(value = """
+        select s.firstName, s.lastName
+        from Student s
+        """)
+    ResponseEntity<StudentProjection> findByIdProjection(UUID id);
+
+    @Modifying
+    @Query(value = """
+UPDATE Student s
+SET s.course = s.course + 1
+WHERE s.course < 5""")
+    void incrementCourses();
+
+    @Query(value = """
+SELECT s.id as uuid, s.firstName as firstName, s.lastName as lastName
+FROM Student as s
+WHERE LOWER(s.lastName)  LIKE LOWER(CONCAT('%', :likeName, '%'))
+""")
+    List<StudentProjectionAndId> findByLikeNameStudent(@Param("likeName") String likeName);
+
+    @Query(value = """
+select s.id as uuid, s.firstName as firstName, s.lastName as lastName
+from Student as s
+order by firstName asc
+""")
+    Page<StudentProjectionAndId> findAllForProjection(Pageable page);
+}
