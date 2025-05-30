@@ -1,7 +1,5 @@
 package com.student.student.repository.responce;
 
-import java.util.Optional;
-
 public interface StudentProjection {
     String getFirstName();
 
@@ -9,6 +7,5 @@ public interface StudentProjection {
 
     default String getFullName() {
         return getFirstName() + " " + getLastName();
-
     }
 }
