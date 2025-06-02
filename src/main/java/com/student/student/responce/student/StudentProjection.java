@@ -1,4 +1,4 @@
-package com.student.student.repository.responce;
+package com.student.student.responce.student;
 
 public interface StudentProjection {
     String getFirstName();

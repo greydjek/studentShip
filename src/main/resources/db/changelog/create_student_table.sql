@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS student
     last_name TEXT CHECK(LENGTH(last_name)<50),
     mobile_phone BIGINT,
     specialization TEXT CHECK(LENGTH(specialization)<60),
-    cource INT,
+    course INT,
     worker TEXT CHECK(LENGTH(worker)<200),
     created_at DATE DEFAULT CURRENT_DATE
 );

@@ -1,6 +1,5 @@
-package com.student.student.repository.responce;
+package com.student.student.responce.company;
 
-import com.student.student.data.Company;
 import java.util.UUID;
 
 public record CompanyResponceRecord(UUID id, String name, String address) {

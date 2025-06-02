@@ -4,15 +4,14 @@ import com.student.student.data.Student;
 import com.student.student.exeption.ErrorMessage;
 import com.student.student.exeption.ExceptionData;
 import com.student.student.repository.StudentRepository;
-import com.student.student.repository.responce.StudentProjection;
-import com.student.student.repository.responce.StudentProjectionAndId;
+import com.student.student.responce.student.StudentProjection;
+import com.student.student.responce.student.StudentProjectionAndId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,11 +31,10 @@ public class ServiceStudent {
     }
 
     @Transactional(readOnly = true)
-    public Page<StudentProjectionAndId> findAllStudentPage(int number, int size) {
+    public Page<StudentProjectionAndId> findAllStudentPage(Pageable pageable) {
         try {
-            Pageable page = PageRequest.of(number, size);
-            log.info(studentRepository.findAllForProjection(page).toString());
-            return studentRepository.findAllForProjection(page);
+            log.info(studentRepository.findAllForProjection(pageable).toString());
+            return studentRepository.findAllForProjection(pageable);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExceptionData(ErrorMessage.STUDENT_NOT_FOUND);

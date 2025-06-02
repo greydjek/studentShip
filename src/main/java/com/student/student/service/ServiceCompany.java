@@ -20,16 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class CompanyService {
+public class ServiceCompany {
 
     private final CompanyRepository companyRepository;
 
     //todo проверка данных полей
     @Transactional
-    public ResponseEntity<Company> createNewCompany(Company company) {
+    public ResponseEntity<Company> saveNewCompany(Company company) {
         if (company.getAddress().isBlank() ||
             company.getName().isBlank()) {
-            throw new ExceptionData(ErrorMessage.DATA_COMPANY_NOT_NULL);
+            throw new ExceptionData
+                    (ErrorMessage.DATA_COMPANY_NOT_NULL);
         }
         companyRepository.save(company);
         log.info("сохранен новый объект в БД {}", company);
@@ -50,19 +51,27 @@ public class CompanyService {
                         }).orElseThrow(() ->
                 {
                     log.info("не нашли компанию по имени проверьте инф");
-                    throw new ExceptionData(HttpStatus.NOT_FOUND, ErrorMessage.COMPANY_NOT_FOUND);
+                    throw new ExceptionData
+                            (HttpStatus.NOT_FOUND, ErrorMessage.COMPANY_NOT_FOUND);
                 });
     }
 
     public ResponseEntity<CompanyResponceRecord> deleteById(UUID uuid) {
-        CompanyResponceRecord companyResponceRecord = companyRepository.findByIdProjection(uuid).orElseThrow(() -> new ExceptionData(ErrorMessage.COMPANY_NOT_FOUND));
+        CompanyResponceRecord companyResponceRecord = companyRepository.findByIdProjection(uuid)
+                .orElseThrow(() -> new ExceptionData(ErrorMessage.COMPANY_NOT_FOUND));
         companyRepository.deleteById(uuid);
         return ResponseEntity.ok(companyResponceRecord);
     }
 
+    public Company findById(UUID id) {
+        return companyRepository.findById(id).orElseThrow(() -> new ExceptionData
+                (ErrorMessage.COMPANY_NOT_FOUND));
+    }
+
     @Transactional
     public ResponseEntity<Company> refactor(Company refCompany) {
-        Company company = companyRepository.findById(refCompany.getId()).orElseThrow(() -> new ExceptionData(ErrorMessage.COMPANY_NOT_FOUND));
+        Company company = companyRepository.findById(refCompany.getId()).orElseThrow(() -> new ExceptionData
+                (ErrorMessage.COMPANY_NOT_FOUND));
         log.info("найден объект компании {}", company.toString());
         company.setName(refCompany.getName());
         company.setAddress(refCompany.getAddress());
