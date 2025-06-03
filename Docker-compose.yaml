@@ -10,4 +10,4 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./data/student/:/var/lib/postgresql/data  # Сохраняем данные БД
+       - ./data/student/:/var/lib/postgresql/data  # Сохраняем данные БД

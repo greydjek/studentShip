@@ -2,8 +2,6 @@ package com.student.student.data;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -38,7 +36,7 @@ public class InternShip {
     @Column(name = "start_date")
     LocalDate startData;
 
-    @Column(name = "and_date")
+    @Column(name = "end_date")
     LocalDate andData;
 
     @Column(name = "position")
@@ -47,6 +45,6 @@ public class InternShip {
     @Column(name = "comments_works")
     String comments;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", insertable = false, updatable = false)
     LocalDate localDate;
 }
