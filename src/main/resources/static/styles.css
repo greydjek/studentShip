@@ -21,3 +21,17 @@ a.btn {
     padding: 10px 20px;
     border-radius: 5px;
 }
+
+.internship-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2em;
+}
+
+.internship-form vaadin-combo-box,
+.internship-form vaadin-date-picker,
+.internship-form vaadin-text-field,
+.internship-form vaadin-text-area {
+    width: 100%;
+    margin-bottom: 1em;
+}

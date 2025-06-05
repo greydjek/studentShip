@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS internship
     created_at     DATE DEFAULT CURRENT_DATE,
     CONSTRAINT valid_dates CHECK (end_date >= start_date),
     CONSTRAINT position CHECK(length(position) <150),
-    CONSTRAINT comments_works CHECK(length(comments_works)<150)
+    CONSTRAINT comments_works CHECK(length(comments_works)<500)
 
 );

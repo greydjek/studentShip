@@ -1,10 +1,13 @@
 package com.student.student.responce.internShip;
 
+import jakarta.validation.groups.Default;
 import java.time.LocalDate;
 import java.util.UUID;
 
 public interface DtoResponseInternShip {
         UUID getId();
+        UUID getStudentId();
+        UUID getCompanyId();
         String getLastName();
         String getFirstName();
         String getCompanyName();
@@ -12,4 +15,7 @@ public interface DtoResponseInternShip {
         LocalDate getEndDate();
         String getPosition();
         String getComments();
+        default String studentFullName(){
+                return getFirstName() + getLastName();
+        }
 }

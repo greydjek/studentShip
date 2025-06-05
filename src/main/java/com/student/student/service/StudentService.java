@@ -4,6 +4,7 @@ import com.student.student.data.Student;
 import com.student.student.exeption.ErrorMessage;
 import com.student.student.exeption.ExceptionData;
 import com.student.student.repository.StudentRepository;
+import com.student.student.responce.StudentFullProjection;
 import com.student.student.responce.student.StudentProjection;
 import com.student.student.responce.student.StudentProjectionAndId;
 import java.util.List;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ServiceStudent {
+public class StudentService {
 
     private final StudentRepository studentRepository;
 
@@ -30,18 +31,31 @@ public class ServiceStudent {
         return ResponseEntity.ok(student);
     }
 
+    public List<StudentProjectionAndId> findAllProjectionForFront() {
+        return studentRepository.findAllProjectionForFront();
+    }
+
     @Transactional(readOnly = true)
     public Page<StudentProjectionAndId> findAllStudentPage(Pageable pageable) {
         try {
             log.info(studentRepository.findAllForProjection(pageable).toString());
             return studentRepository.findAllForProjection(pageable);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ExceptionData e) {
             throw new ExceptionData(ErrorMessage.STUDENT_NOT_FOUND);
         }
     }
 
-    public ResponseEntity<StudentProjection> saveNewStudent(Student student) {
+    @Transactional(readOnly = true)
+    public Page<StudentFullProjection> findAllStudentForMainPage(Pageable pageable) {
+        try {
+            log.info(studentRepository.findAllForMainPage(pageable).toString());
+            return studentRepository.findAllForMainPage(pageable);
+        } catch (ExceptionData e) {
+            throw new ExceptionData(ErrorMessage.STUDENT_NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity saveNewStudent(Student student) {
         if (!student.getFirstName().isBlank() ||
             !student.getLastName().isBlank() ||
             !student.getSpecialization().isBlank() ||
@@ -50,7 +64,7 @@ public class ServiceStudent {
         } else {
             throw new ExceptionData(ErrorMessage.DATA_STUDENT_NOT_NULL);
         }
-        return studentRepository.findByIdProjection(student.getId());
+        return ResponseEntity.ok().build();
     }
 
     //todo проверить приходящую строку id
@@ -65,17 +79,23 @@ public class ServiceStudent {
     }
 
     @Transactional
-    public ResponseEntity<StudentProjection> refreshDataStudent(Student studentRef) {
+    public ResponseEntity<StudentFullProjection> refreshDataStudent(Student studentRef) {
         Student student = studentRepository.findById(studentRef.getId()).orElseThrow(
                 () -> new ExceptionData(ErrorMessage.STUDENT_NOT_FOUND));
-
+if (studentRef.getFirstName().isBlank()||
+    studentRef.getLastName().isBlank()||
+    studentRef.getCourse() <= 0||
+    studentRef.getCourse() > 4) {
+    throw new ExceptionData(ErrorMessage.DATA_STUDENT_NOT_NULL);
+}
         student.setFirstName(studentRef.getFirstName());
         student.setLastName(studentRef.getLastName());
         student.setMiddleName(studentRef.getMiddleName());
         student.setCourse(studentRef.getCourse());
         student.setSpecialization(studentRef.getSpecialization());
         student.setMobilePhone(studentRef.getMobilePhone());
-        return ResponseEntity.ok(studentRepository.findByIdProjection(student.getId()).getBody());
+        student.setWorker(studentRef.getWorker());
+        return ResponseEntity.ok(studentRepository.findByIdFullProjection(student.getId()).orElseThrow(() -> new ExceptionData(ErrorMessage.STUDENT_NOT_FOUND)));
     }
 
     public ResponseEntity<List<StudentProjectionAndId>> findByLikeNameStudent(String likeName) {
@@ -84,5 +104,13 @@ public class ServiceStudent {
             throw new ExceptionData(ErrorMessage.NOT_FOUND_LIKE_NAME);
         }
         return ResponseEntity.ok(studentProjectionAndId.stream().toList());
+    }
+
+    public ResponseEntity<List<StudentFullProjection>> findByLikeNameFullProjectionStudent(String likeName) {
+        List<StudentFullProjection> studentFullProjection = studentRepository.findByLikeNameFullProjectionStudent(likeName);
+        if (studentFullProjection.isEmpty()) {
+            throw new ExceptionData(ErrorMessage.NOT_FOUND_LIKE_NAME);
+        }
+        return ResponseEntity.ok(studentFullProjection.stream().toList());
     }
 }

@@ -7,6 +7,7 @@ import com.student.student.repository.CompanyRepository;
 import com.student.student.responce.company.CompanyProjection;
 import com.student.student.responce.company.CompanyProjectionAndId;
 import com.student.student.responce.company.CompanyResponceRecord;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,10 +27,11 @@ public class CompanyService {
 
     //todo проверка данных полей
     @Transactional
-    public ResponseEntity<Company> createNewCompany(Company company) {
+    public ResponseEntity<Company> saveNewCompany(Company company) {
         if (company.getAddress().isBlank() ||
             company.getName().isBlank()) {
-            throw new ExceptionData(ErrorMessage.DATA_COMPANY_NOT_NULL);
+            throw new ExceptionData
+                    (ErrorMessage.DATA_COMPANY_NOT_NULL);
         }
         companyRepository.save(company);
         log.info("сохранен новый объект в БД {}", company);
@@ -38,6 +40,11 @@ public class CompanyService {
 
     public Page<CompanyProjectionAndId> findAll(Pageable pageable) {
         return companyRepository.findAllForProjection(pageable);
+    }
+
+    //todo отдавать проекцию тк сведения о компании не нужны только имя адрес и ID
+    public List<Company> findAllProjection() {
+        return companyRepository.findAll();
     }
 
     public ResponseEntity<String> findByName(String name) {
@@ -50,24 +57,36 @@ public class CompanyService {
                         }).orElseThrow(() ->
                 {
                     log.info("не нашли компанию по имени проверьте инф");
-                    throw new ExceptionData(HttpStatus.NOT_FOUND, ErrorMessage.COMPANY_NOT_FOUND);
+                    throw new ExceptionData
+                            (HttpStatus.NOT_FOUND, ErrorMessage.COMPANY_NOT_FOUND);
                 });
     }
 
     public ResponseEntity<CompanyResponceRecord> deleteById(UUID uuid) {
-        CompanyResponceRecord companyResponceRecord = companyRepository.findByIdProjection(uuid).orElseThrow(() -> new ExceptionData(ErrorMessage.COMPANY_NOT_FOUND));
+        CompanyResponceRecord companyResponceRecord = companyRepository.findByIdProjection(uuid)
+                .orElseThrow(() -> new ExceptionData(ErrorMessage.COMPANY_NOT_FOUND));
         companyRepository.deleteById(uuid);
         return ResponseEntity.ok(companyResponceRecord);
     }
 
+    public Company findById(UUID id) {
+        return companyRepository.findById(id).orElseThrow(() -> new ExceptionData
+                (ErrorMessage.COMPANY_NOT_FOUND));
+    }
+
     @Transactional
     public ResponseEntity<Company> refactor(Company refCompany) {
-        Company company = companyRepository.findById(refCompany.getId()).orElseThrow(() -> new ExceptionData(ErrorMessage.COMPANY_NOT_FOUND));
+        Company company = companyRepository.findById(refCompany.getId()).orElseThrow(() -> new ExceptionData
+                (ErrorMessage.COMPANY_NOT_FOUND));
         log.info("найден объект компании {}", company.toString());
         company.setName(refCompany.getName());
         company.setAddress(refCompany.getAddress());
         log.info("обновленный объект компании {}", refCompany.toString());
 
         return ResponseEntity.ok(refCompany);
+    }
+
+    public Page<CompanyProjectionAndId> findByLikeNameCompany(String name, Pageable pageable){
+        return companyRepository.findLikeNameCompany(name, pageable);
     }
 }

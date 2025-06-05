@@ -4,9 +4,9 @@ import com.student.student.data.Company;
 import com.student.student.data.InternShip;
 import com.student.student.data.Student;
 import com.student.student.exeption.ErrorMessage;
-import com.student.student.exeption.ExceptionData
-        ;
+import com.student.student.exeption.ExceptionData;
 import com.student.student.repository.InternShipRepository;
+import com.student.student.request.InternshipDtoForFront;
 import com.student.student.request.RequestDtoInternShip;
 import com.student.student.responce.internShip.DtoResponseInternShip;
 import com.student.student.responce.internShip.InternShipProjection;
@@ -22,13 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class InternShipService {
+public class InternshipService {
 
     private final InternShipRepository internShipRepository;
 
-    private final ServiceStudent serviceStudent;
+    private final StudentService studentService;
 
-    private final ServiceCompany serviceCompany;
+    private final CompanyService companyService;
 
     public ResponseEntity<InternShipProjection> getInternShipFromId(UUID id) {
         InternShipProjection internShipProjection =
@@ -39,9 +39,9 @@ public class InternShipService {
     }
 
     @Transactional
-    public ResponseEntity<InternShip> createInternShip(RequestDtoInternShip requestDtoInternShip) {
-        Student student = serviceStudent.findById(requestDtoInternShip.studentId()).getBody();
-        Company company = serviceCompany.findById(requestDtoInternShip.companyId());
+    public ResponseEntity<InternShip> createInternShip(InternshipDtoForFront requestDtoInternShip) {
+        Student student = studentService.findById(requestDtoInternShip.studentId()).getBody();
+        Company company = companyService.findById(requestDtoInternShip.companyId());
 
         log.info("студент найден, компания проверена");
 
@@ -64,8 +64,8 @@ public class InternShipService {
                 () -> new ExceptionData
                         (ErrorMessage.INTERN_SHIP_NOT_FOUND));
 
-        Student student = serviceStudent.findById(internShipRefactor.studentId()).getBody();
-        Company company = serviceCompany.findById(internShipRefactor.companyId());
+        Student student = studentService.findById(internShipRefactor.studentId()).getBody();
+        Company company = companyService.findById(internShipRefactor.companyId());
         log.info("сервис рефакторинг практики проверил студента и компанию");
         internShip.setCompanyId(company);
         internShip.setStudentId(student);
@@ -87,5 +87,18 @@ public class InternShipService {
 
     public Page<DtoResponseInternShip> getAllInternShip(Pageable pageable) {
         return internShipRepository.findAllRequestDto(pageable);
+    }
+
+    public Page<DtoResponseInternShip> getLikeStudentName(String name, Pageable pageable) {
+        return internShipRepository.findAllRequestDtoForLikeStudentName(name, pageable);
+    }
+
+    public DtoResponseInternShip getDtoResponseInternShip(UUID internshipId) {
+        log.info("в сервис предано Id компании {}", internshipId);
+        return internShipRepository.findByIdDtoResponseInternship(internshipId);
+    }
+
+    public String getComments(UUID id) {
+    return internShipRepository.getCommentsById(id);
     }
 }
