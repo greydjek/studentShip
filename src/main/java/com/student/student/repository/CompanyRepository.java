@@ -1,9 +1,9 @@
 package com.student.student.repository;
 
 import com.student.student.data.Company;
-import com.student.student.repository.responce.CompanyProjection;
-import com.student.student.repository.responce.CompanyProjectionAndId;
-import com.student.student.repository.responce.CompanyResponceRecord;
+import com.student.student.responce.company.CompanyProjection;
+import com.student.student.responce.company.CompanyProjectionAndId;
+import com.student.student.responce.company.CompanyResponceRecord;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -31,6 +31,6 @@ WHERE id= :id
    @Query(value = """
 SELECT c.id AS id, c.name AS name, c.address AS address
 FROM Company AS c
-""")
+""", countQuery = "SELECT COUNT(c) FROM Company AS c")
    Page<CompanyProjectionAndId> findAllForProjection(Pageable page);
 }

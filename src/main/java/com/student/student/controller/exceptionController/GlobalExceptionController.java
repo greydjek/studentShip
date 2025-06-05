@@ -31,7 +31,8 @@ public class GlobalExceptionController implements ErrorController {
     }
 
     @ExceptionHandler(ExceptionData.class)
-    public String getMyException(ExceptionData ex){
+    public String getExceptionData
+(ExceptionData ex){
         return "error404";//todo рассмотреть вариант перенесения кастомной логики в hendlerError с помощью MyExeption
     }
 

@@ -1,4 +1,4 @@
-package com.student.student.repository.responce;
+package com.student.student.responce.student;
 
 import java.util.UUID;
 

@@ -1,8 +1,7 @@
-package com.student.student.repository.responce;
+package com.student.student.responce.company;
 
 
 import java.util.UUID;
-import org.apache.commons.text.translate.UnicodeUnescaper;
 
 public interface CompanyProjection {
     UUID getId();

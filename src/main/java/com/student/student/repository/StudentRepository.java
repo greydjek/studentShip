@@ -1,11 +1,9 @@
 package com.student.student.repository;
 
 import com.student.student.data.Student;
-import com.student.student.repository.responce.StudentProjection;
-import com.student.student.repository.responce.StudentProjectionAndId;
-import com.student.student.repository.responce.StudentRecordResponse;
+import com.student.student.responce.student.StudentProjection;
+import com.student.student.responce.student.StudentProjectionAndId;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
@@ -44,6 +42,6 @@ WHERE LOWER(s.lastName)  LIKE LOWER(CONCAT('%', :likeName, '%'))
 select s.id as uuid, s.firstName as firstName, s.lastName as lastName
 from Student as s
 order by firstName asc
-""")
+""", countQuery = "SELECT COUNT(s) FROM Student AS s")
     Page<StudentProjectionAndId> findAllForProjection(Pageable page);
 }
