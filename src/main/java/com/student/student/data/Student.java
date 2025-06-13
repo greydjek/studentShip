@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Table(name = "student")
+@Builder
 public class Student {
 
     @Id
@@ -32,11 +34,14 @@ public class Student {
     String firstName;
     String middleName;
     String lastName;
-    Long mobilePhone;
+    String mobilePhone;
     String specialization;
     Integer course;
     String worker;
     @Column(name = "created_at")
     LocalDate localDate;
 
+    public String getFio(){
+        return   getLastName() + " " + getFirstName()+ " " + getMiddleName();
+    }
 }

@@ -4,7 +4,7 @@ import com.student.student.data.InternShip;
 import com.student.student.request.RequestDtoInternShip;
 import com.student.student.responce.internShip.DtoResponseInternShip;
 import com.student.student.responce.internShip.InternShipProjection;
-import com.student.student.service.InternShipService;
+import com.student.student.service.InternshipService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,16 +26,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/internship")
 public class InternshipController {
 
-    private final InternShipService internShipService;
+    private final InternshipService internShipService;
 
     @GetMapping("/{id}")
     public ResponseEntity<InternShipProjection> getInternShipProjection(@PathVariable("id") UUID uuid) {
         return internShipService.getInternShipFromId(uuid);
-    }
-
-    @PostMapping("/")
-    public ResponseEntity<InternShip> createNewInternShip(@RequestBody RequestDtoInternShip requestDtoInternShip) {
-        return internShipService.createInternShip(requestDtoInternShip);
     }
 
     @PutMapping("/")
