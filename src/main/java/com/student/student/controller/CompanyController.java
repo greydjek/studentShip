@@ -35,20 +35,22 @@ public class CompanyController {
     }
 
     @GetMapping("/all")
-    public Page<CompanyProjectionAndId> findAll(@PageableDefault(size = 11,sort = "name")Pageable pageable) {
+    public Page<CompanyProjectionAndId> findAll(@PageableDefault(size = 11, sort = "name") Pageable pageable) {
         return companyService.findAll(pageable);
     }
-//Todo рассмотреть вариант soft delete
+
+    //Todo рассмотреть вариант soft delete
     @DeleteMapping("/")
-    public ResponseEntity<CompanyResponceRecord> delete(@RequestParam UUID id) {
+    public ResponseEntity<?> delete(@RequestParam UUID id) {
         return companyService.deleteById(id);
     }
 
     @PutMapping("/")
-    public ResponseEntity<Company> refactorCompany(@RequestBody Company company ){
+    public ResponseEntity<Company> refactorCompany(@RequestBody Company company) {
         log.info("принят объект для обновления компании {}", company);
         return companyService.refactor(company);
     }
+
     @GetMapping("/")
     public ResponseEntity<String> findByName(@RequestParam String companyName) {
         log.info("контроллер принял имя компании {} ", companyName);

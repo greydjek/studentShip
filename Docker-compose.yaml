@@ -1,7 +1,6 @@
 
 services:
-  client:
-    image: client:0.0.1
+  clientst:
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,6 +8,8 @@ services:
       no_cache: true
     ports:
       - "8083:8083"
+    env_file:
+      - .env
     depends_on:
       - postgres
     environment:

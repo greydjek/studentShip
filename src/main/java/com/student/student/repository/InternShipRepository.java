@@ -25,7 +25,7 @@ public interface InternShipRepository extends JpaRepository<InternShip, UUID> {
             FROM InternShip AS i
             WHERE i.id = :id
             """)
-   Optional <InternShipProjection> findByInternshipProjection(@Param("id") UUID id);
+    Optional<InternShipProjection> findByInternshipProjection(@Param("id") UUID id);
 
     @Query(value = """
             SELECT i.id AS id,
@@ -74,10 +74,10 @@ public interface InternShipRepository extends JpaRepository<InternShip, UUID> {
             """)
     DtoResponseInternShip findByIdDtoResponseInternship(@Param("internshipId") UUID internshipId);
 
-@Query("""
-SELECT i.comments AS comments
-FROM InternShip i
-WHERE i.id = :id
-""")
+    @Query("""
+            SELECT i.comments AS comments
+            FROM InternShip i
+            WHERE i.id = :id
+            """)
     String getCommentsById(@Param("id") UUID id);
 }

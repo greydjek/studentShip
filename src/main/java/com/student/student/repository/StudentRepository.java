@@ -38,6 +38,7 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
             WHERE LOWER(s.lastName)  LIKE LOWER(CONCAT('%', :likeName, '%'))
             """)
     List<StudentProjectionAndId> findByLikeNameStudent(@Param("likeName") String likeName);
+
     @Query(value = """
             select s.id as uuid, (s.firstName, s.lastName) as fullName, s.specialization as specialization,
             s.course as course
@@ -67,7 +68,8 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
             from Student as s
             where s.id = :uuid
             """)
-    Optional<StudentFullProjection>findByIdFullProjection(@Param("uuid") UUID uuid);
+    Optional<StudentFullProjection> findByIdFullProjection(@Param("uuid") UUID uuid);
+
     @Query(value = """
             select s.id as uuid, (s.firstName ||" "|| s.lastName ||" "|| s.middleName) as fullName, s.specialization as specialization,
             s.course as course

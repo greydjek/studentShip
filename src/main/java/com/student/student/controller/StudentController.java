@@ -8,7 +8,6 @@ import com.student.student.service.StudentService;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.atmosphere.config.service.Put;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -31,7 +30,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/")
-    public ResponseEntity<?> getAllStudent(@PageableDefault(size = 11, sort = "firstName")Pageable pageable) {
+    public ResponseEntity<?> getAllStudent(@PageableDefault(size = 11, sort = "firstName") Pageable pageable) {
         Page<StudentProjectionAndId> page = studentService.findAllStudentPage(pageable);
         return ResponseEntity.ok(page);
     }

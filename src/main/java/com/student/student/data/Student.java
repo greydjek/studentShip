@@ -41,7 +41,7 @@ public class Student {
     @Column(name = "created_at")
     LocalDate localDate;
 
-    public String getFio(){
-        return   getLastName() + " " + getFirstName()+ " " + getMiddleName();
+    public String getFio() {
+        return getLastName() + " " + getFirstName() + " " + getMiddleName();
     }
 }

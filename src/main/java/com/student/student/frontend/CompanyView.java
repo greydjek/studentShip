@@ -4,7 +4,6 @@ import com.student.student.data.Company;
 import com.student.student.exeption.ExceptionData;
 import com.student.student.frontend.utils.ConfigFrontend;
 import com.student.student.responce.company.CompanyProjectionAndId;
-import com.student.student.responce.company.CompanyResponceRecord;
 import com.student.student.service.CompanyService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Shortcuts;
@@ -21,7 +20,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -207,8 +205,8 @@ public class CompanyView extends VerticalLayout {
 
         dialog.addConfirmListener(event -> {
             try {
-                CompanyResponceRecord deleted = companyService.deleteById(companyId).getBody();
-                Notification.show("Компания удалена: " + deleted.name(), duration, Notification.Position.MIDDLE);
+                String deleted = (String) companyService.deleteById(companyId).getBody();
+                Notification.show("Компания удалена: " + deleted, duration, Notification.Position.MIDDLE);
                 grid.getDataProvider().refreshAll();
             } catch (ExceptionData e) {
                 Notification.show(e.getMessage(), duration, Notification.Position.MIDDLE);

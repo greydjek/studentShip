@@ -14,6 +14,7 @@ public class ExceptionData extends RuntimeException {
     public ExceptionData(ErrorMessage errorMessage) {
         super(errorMessage.getMessage());
     }
+
     public ExceptionData(HttpStatus httpStatus, ErrorMessage errorMessage) {
         super(errorMessage.getMessage());
         this.status = httpStatus;
