@@ -1,13 +1,39 @@
+
 services:
+  client:
+    image: client:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+      no_cache: true
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgres
+    environment:
+      - SERVER_PORT=8083
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/student
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
 
   postgres:
+    container_name: serviceDb
     image: postgres:17.4
-    container_name: student
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: student
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD : pass
     ports:
-      - "5432:5432"
+      - "15432:5432"
     volumes:
-       - ./data/student/:/var/lib/postgresql/data  # Сохраняем данные БД
+      - ./initialization/:/docker-entrypoint-initdb.d/
+      - data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+networks:
+  client-network:
+    driver: bridge
+
+volumes:
+  data:
