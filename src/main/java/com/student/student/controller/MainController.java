@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/main")
 public class MainController {
     @GetMapping
-    public String mainPage(){
+    public String mainPage() {
         return "userPage/main";
     }
 }

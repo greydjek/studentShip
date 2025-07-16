@@ -1,6 +1,5 @@
 package com.student.student.controller;
 
-import com.student.student.data.InternShip;
 import com.student.student.request.RequestDtoInternShip;
 import com.student.student.responce.internShip.DtoResponseInternShip;
 import com.student.student.responce.internShip.InternShipProjection;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +42,7 @@ public class InternshipController {
     }
 
     @GetMapping("/")
-    public Page<DtoResponseInternShip> getAllInternShip(@PageableDefault(size = 18, sort = "startDate") Pageable pageable){
+    public Page<DtoResponseInternShip> getAllInternShip(@PageableDefault(size = 18, sort = "startDate") Pageable pageable) {
         return internShipService.getAllInternShip(pageable);
     }
 

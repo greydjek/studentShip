@@ -29,6 +29,7 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.PermitAll;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -36,8 +37,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+@PermitAll
 @PageTitle("Список практик")
-@Route(value = "", layout = MainLayout.class)
+@Route(value = "listInternship", layout = MainLayout.class)
 public class ListView extends VerticalLayout {
     private final InternshipService internshipService;
     private final Grid<DtoResponseInternShip> grid = new Grid<>(DtoResponseInternShip.class, false);

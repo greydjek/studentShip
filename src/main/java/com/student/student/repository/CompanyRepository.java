@@ -17,35 +17,35 @@ import org.springframework.stereotype.Repository;
 public interface CompanyRepository extends JpaRepository<Company, UUID> {
 
     @Query(value = """ 
-SELECT c.id AS id, c.name AS name, c.address AS address
-FROM Company AS c
-WHERE LOWER(c.name)= LOWER(:name)
-""")
+            SELECT c.id AS id, c.name AS name, c.address AS address
+            FROM Company AS c
+            WHERE LOWER(c.name)= LOWER(:name)
+            """)
     Optional<CompanyProjection> findByName(@Param("name") String name);
 
-   @Query(value ="""
-SELECT c.id AS id, c.name AS name, c.address AS address
-FROM Company AS c
-WHERE id= :id
-""")
-    Optional<CompanyResponceRecord> findByIdProjection(@Param("id") UUID id);
-
-   @Query(value = """
-           SELECT
-            c.id AS id,
-            c.name AS name,
-            c.address AS address
-           FROM Company AS c
-           """, countQuery = "SELECT COUNT(c) FROM Company AS c")
-   Page<CompanyProjectionAndId> findAllForProjection(Pageable pageable);
+    @Query(value = """
+            SELECT c.id AS id, c.name AS name, c.address AS address
+            FROM Company AS c
+            WHERE id= :id
+            """)
+    Optional<CompanyProjection> findByIdProjection(@Param("id") UUID id);
 
     @Query(value = """
-    SELECT
-        c.id AS id,
-        c.name AS name,
-        c.address AS address
-    FROM Company c
-    WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))
-""", countQuery = "SELECT COUNT(c) FROM Company c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+            SELECT
+             c.id AS id,
+             c.name AS name,
+             c.address AS address
+            FROM Company AS c
+            """, countQuery = "SELECT COUNT(c) FROM Company AS c")
+    Page<CompanyProjectionAndId> findAllForProjection(Pageable pageable);
+
+    @Query(value = """
+                SELECT
+                    c.id AS id,
+                    c.name AS name,
+                    c.address AS address
+                FROM Company c
+                WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))
+            """, countQuery = "SELECT COUNT(c) FROM Company c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     Page<CompanyProjectionAndId> findLikeNameCompany(@Param("name") String name, Pageable pageable);
 }

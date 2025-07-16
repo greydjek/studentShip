@@ -99,6 +99,6 @@ public class InternshipService {
     }
 
     public String getComments(UUID id) {
-    return internShipRepository.getCommentsById(id);
+        return internShipRepository.getCommentsById(id);
     }
 }

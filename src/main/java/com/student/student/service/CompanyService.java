@@ -62,11 +62,11 @@ public class CompanyService {
                 });
     }
 
-    public ResponseEntity<CompanyResponceRecord> deleteById(UUID uuid) {
-        CompanyResponceRecord companyResponceRecord = companyRepository.findByIdProjection(uuid)
+    public ResponseEntity<?> deleteById(UUID uuid) {
+        companyRepository.findByIdProjection(uuid)
                 .orElseThrow(() -> new ExceptionData(ErrorMessage.COMPANY_NOT_FOUND));
         companyRepository.deleteById(uuid);
-        return ResponseEntity.ok(companyResponceRecord);
+        return ResponseEntity.ok("компания удалена");
     }
 
     public Company findById(UUID id) {
@@ -86,7 +86,7 @@ public class CompanyService {
         return ResponseEntity.ok(refCompany);
     }
 
-    public Page<CompanyProjectionAndId> findByLikeNameCompany(String name, Pageable pageable){
+    public Page<CompanyProjectionAndId> findByLikeNameCompany(String name, Pageable pageable) {
         return companyRepository.findLikeNameCompany(name, pageable);
     }
 }

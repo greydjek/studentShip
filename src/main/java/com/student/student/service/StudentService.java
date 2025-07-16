@@ -5,7 +5,6 @@ import com.student.student.exeption.ErrorMessage;
 import com.student.student.exeption.ExceptionData;
 import com.student.student.repository.StudentRepository;
 import com.student.student.responce.StudentFullProjection;
-import com.student.student.responce.student.StudentProjection;
 import com.student.student.responce.student.StudentProjectionAndId;
 import java.util.List;
 import java.util.Optional;
@@ -82,12 +81,12 @@ public class StudentService {
     public ResponseEntity<StudentFullProjection> refreshDataStudent(Student studentRef) {
         Student student = studentRepository.findById(studentRef.getId()).orElseThrow(
                 () -> new ExceptionData(ErrorMessage.STUDENT_NOT_FOUND));
-if (studentRef.getFirstName().isBlank()||
-    studentRef.getLastName().isBlank()||
-    studentRef.getCourse() <= 0||
-    studentRef.getCourse() > 4) {
-    throw new ExceptionData(ErrorMessage.DATA_STUDENT_NOT_NULL);
-}
+        if (studentRef.getFirstName().isBlank() ||
+            studentRef.getLastName().isBlank() ||
+            studentRef.getCourse() <= 0 ||
+            studentRef.getCourse() > 4) {
+            throw new ExceptionData(ErrorMessage.DATA_STUDENT_NOT_NULL);
+        }
         student.setFirstName(studentRef.getFirstName());
         student.setLastName(studentRef.getLastName());
         student.setMiddleName(studentRef.getMiddleName());
